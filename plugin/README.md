@@ -777,6 +777,16 @@ defineField({
 })
 ```
 
+## Restrict AI Assist to translations only
+
+If you want to restrict AI Assist to only provide translations, you can set `translateOnly: true` in the configuration.
+
+```ts
+assist({
+  translateOnly: true,
+})
+```
+
 ## Caveats
 
 Large Language Models (LLMs) are a new technology. Constraints and limitations are still being explored,

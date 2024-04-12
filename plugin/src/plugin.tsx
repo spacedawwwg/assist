@@ -20,6 +20,7 @@ import {assistDocumentTypeName, AssistPreset} from './types'
 
 export interface AssistPluginConfig {
   translate?: TranslationConfig
+  translateOnly?: boolean
 
   /**
    * @internal

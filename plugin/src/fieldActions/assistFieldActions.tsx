@@ -29,6 +29,7 @@ import {documentRootKey, fieldPathParam, instructionParam, type StudioInstructio
 import {generateCaptionsActions} from './generateCaptionActions'
 import {generateImagActions} from './generateImageActions'
 import {PrivateIcon} from './PrivateIcon'
+import {useAiAssistanceConfig} from '../assistLayout/AiAssistanceConfigContext'
 
 function node(node: DocumentFieldActionItem | DocumentFieldActionGroup) {
   return node
@@ -61,6 +62,8 @@ export const assistFieldActions: DocumentFieldAction = {
           useAssistDocumentContextValue(props.documentId, schemaType as ObjectSchemaType)
         : // eslint-disable-next-line react-hooks/rules-of-hooks
           useAssistDocumentContext()
+
+    const {config} = useAiAssistanceConfig()
 
     const {value: docValue, formState} = useDocumentPane()
     const formStateRef = useRef(formState)
@@ -212,7 +215,7 @@ export const assistFieldActions: DocumentFieldAction = {
           children: [
             runInstructionsGroup,
             translateAction,
-            assistSupported && manageInstructionsItem,
+            !config.translateOnly && assistSupported && manageInstructionsItem,
           ]
             .filter((c): c is DocumentFieldActionItem | DocumentFieldActionGroup => !!c)
             .filter((c) => (c.type === 'group' ? c.children.length : true)),
@@ -221,12 +224,12 @@ export const assistFieldActions: DocumentFieldAction = {
           hidden: !assistSupported && !imageCaptionAction && !translateAction && !imageGenAction,
         }),
       [
-        //documentIsNew,
         runInstructionsGroup,
-        manageInstructionsItem,
-        assistSupported,
-        imageCaptionAction,
         translateAction,
+        config.translateOnly,
+        assistSupported,
+        manageInstructionsItem,
+        imageCaptionAction,
         imageGenAction,
       ],
     )
